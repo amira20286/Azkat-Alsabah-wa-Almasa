@@ -8,7 +8,7 @@ body{font-family:'Amiri',serif;background:#FDF6E3;margin:0;padding:14px}
 .langs button{font-size:26px;background:#EDE6D6;border:0;border-radius:12px;padding:6px 10px}
 .langs button.active{background:#2D4A2B}
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
-.tabs button{flex:1;padding:10px;border:0;border-radius:20px;background:#EDE6D6;font-size:17px}
+.tabs button{flex:1;padding:10px 6px;border:0;border-radius:20px;background:#EDE6D6;font-size:16px;white-space:nowrap}
 .tabs button.active{background:#2D4A2B;color:#fff}
 .card{background:#fff;border-radius:14px;padding:14px;margin:12px 0}
 .card p{font-size:24px;line-height:2;text-align:center}
@@ -17,11 +17,13 @@ body{font-family:'Amiri',serif;background:#FDF6E3;margin:0;padding:14px}
 .fadl{background:#FFF8E1;padding:10px;border-radius:10px;font-size:17px;line-height:1.8;text-align:center}
 .greenBtn{width:100%;padding:14px;border:0;border-radius:14px;background:#2D4A2B;color:#fff;font-size:18px;font-weight:bold;margin-top:10px}
 .done{opacity:.4}
+.prog{background:#EDE6D6;height:12px;border-radius:20px;overflow:hidden;margin:10px 0}
+.prog div{background:#2D4A2B;height:100%;width:0%;transition:width .3s;border-radius:20px}
 </style></head>
 <body>
 <div class="top"><div><h1 style="margin:0;color:#2D4A2B;font-size:22px">أذكار الصباح والمساء</h1></div>
 <div class="langs"><button id="l-ar" class="active" onclick="setLang('ar')">🇸🇦</button><button id="l-en" onclick="setLang('en')">🇬🇧</button><button id="l-de" onclick="setLang('de')">🇩🇪</button></div></div>
-<label style="display:flex;gap:8px;align-items:center;justify-content:center;margin:10px 0;font-size:17px"><input type="checkbox" id="showTr" checked onchange="render()"> عED إظهار النطق بالحروف اللاتينية</label>
+<label id="trLabel" style="display:none;gap:8px;align-items:center;justify-content:center;margin:10px 0;font-size:17px"><input type="checkbox" id="showTr" checked onchange="render()"> <span id="trText">Show transliteration</span></label>
 <div class="tabs"><button id="bS" class="active" onclick="showTab('s')">☀️ الصباح</button><button id="bM" onclick="showTab('m')">🌙 المساء</button><button id="bN" onclick="showTab('n')">🛏️ النوم</button><button id="bP" onclick="showTab('p')">🕌 بعد الصلاة</button></div>
 <div id="list"></div>
 <script>
@@ -31,7 +33,6 @@ var AYAT=D("اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَ�
 var IKHLAS=D("بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ قُلْ هُوَ اللَّهُ أَحَدٌ ﴿١﴾ اللَّهُ الصَّمَدُ ﴿٢﴾ لَمْ يَلِدْ وَلَمْ يُولَدْ ﴿٣﴾ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ ﴿٤﴾","Bismillahir-rahmanir-rahim. Qul huwa Allahu ahad. Allahu as-samad. Lam yalid wa lam yulad. Wa lam yakun lahu kufuwan ahad.","In the name of Allah, the Most Gracious, the Most Merciful. Say: He is Allah, the One. Allah, the Eternal Refuge. He neither begets nor is born. And there is none comparable to Him.","Im Namen Allahs, des Allerbarmers, des Barmherzigen. Sprich: Er ist Allah, der Eine. Allah, der Ewige. Er zeugt nicht und wurde nicht gezeugt. Und niemand ist Ihm gleich.","تكفي من كل شيء مع المعوذتين","Sufficient for everything with the other two Surahs.","Mit den beiden anderen Suren ausreichend für alles.",3);
 var FALAQ=D("بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ﴿١﴾ مِن شَرِّ مَا خَلَقَ ﴿٢﴾ وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ ﴿٣﴾ وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ﴿٤﴾ وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ ﴿٥﴾","Bismillahir-rahmanir-rahim. Qul a'udhu bi-rabbil-falaq. Min sharri ma khalaq. Wa min sharri ghasiqin idha waqab. Wa min sharrin-naffathati fil-'uqad. Wa min sharri hasidin idha hasad.","Say: I seek refuge in the Lord of daybreak. From the evil of what He created. And from the evil of darkness when it settles. And from the evil of those who blow on knots. And from the evil of an envier when he envies.","Sprich: Ich suche Zuflucht beim Herrn der Morgendämmerung. Vor dem Übel dessen, was Er erschaffen hat. Und vor dem Übel der Finsternis, wenn sie hereinbricht. Und vor dem Übel derer, die auf Knoten blasen. Und vor dem Übel eines Neiders, wenn er neidet.","تكفي من كل شيء","Sufficient for everything.","Ausreichend für alles.",3);
 var NAS=D("بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ قُلْ أَعُوذُ بِرَبِّ النَّاسِ ﴿١﴾ مَلِكِ النَّاسِ ﴿٢﴾ إِلَهِ النَّاسِ ﴿٣﴾ مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ﴿٤﴾ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ﴿٥﴾ مِنَ الْجِنَّةِ وَالنَّاسِ ﴿٦﴾","Bismillahir-rahmanir-rahim. Qul a'udhu bi-rabbin-nas. Malikin-nas. Ilahin-nas. Min sharril-waswasil-khannas. Alladhi yuwaswisu fi sudurin-nas. Minal-jinnati wan-nas.","Say: I seek refuge in the Lord of mankind. The King of mankind. The God of mankind. From the evil of the whisperer who withdraws. Who whispers in the breasts of mankind. From among jinn and mankind.","Sprich: Ich suche Zuflucht beim Herrn der Menschen. Dem König der Menschen. Dem Gott der Menschen. Vor dem Übel des Einflüsterers, der sich zurückzieht. Der in die Brüste der Menschen einflüstert. Von den Dschinn und den Menschen.","ما تعوذ متعوذ بمثلها","No one seeks refuge with anything like them.","Niemand sucht Zuflucht mit etwas wie ihnen.",3);
-
 var S=[AYAT,IKHLAS,FALAQ,NAS,
 D("أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذَا الْيَوْمِ وَخَيْرَ مَا بَعْدَهُ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذَا الْيَوْمِ وَشَرِّ مَا بَعْدَهُ","Asbahna wa asbaha al-mulku lillah, wal-hamdu lillah, la ilaha illallahu wahdahu la sharika lah, lahul-mulku wa lahul-hamdu wa huwa 'ala kulli shay'in qadir. Rabbi as'aluka khayra ma fi hadha al-yawm wa khayra ma ba'dah, wa a'udhu bika min sharri ma fi hadha al-yawm wa sharri ma ba'dah.","We have entered the morning and the whole kingdom belongs to Allah. All praise is for Allah. There is no god but Allah alone, without partner. To Him belongs dominion and praise, and He is able to do all things. My Lord, I ask You for the good of this day and the good after it, and I seek refuge in You from the evil of this day and the evil after it.","Wir sind in den Morgen eingetreten und das ganze Königreich gehört Allah. Alles Lob gehört Allah. Es gibt keinen Gott außer Allah allein, ohne Partner. Ihm gehört die Herrschaft und das Lob, und Er ist zu allem fähig. Mein Herr, ich bitte Dich um das Gute dieses Tages und das Gute danach, und ich suche Zuflucht bei Dir vor dem Übel dieses Tages und dem Übel danach.","كان النبي ﷺ يقوله إذا أصبح","The Prophet ﷺ used to say it in the morning.","Der Prophet ﷺ sagte es am Morgen.",1),
 D("اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ لَكَ بِذَنْبِي فَاغْفِرْ لِي، فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ","Allahumma anta rabbi, la ilaha illa ant, khalaqtani wa ana 'abduk, wa ana 'ala 'ahdika wa wa'dika ma astata't, a'udhu bika min sharri ma sana't, abu'u laka bi-ni'matika 'alayy, wa abu'u laka bi-dhanbi faghfir li, fa-innahu la yaghfiru adh-dhunuba illa ant.","O Allah, You are my Lord, there is no god but You. You created me and I am Your servant, and I am upon Your covenant and promise as much as I can. I seek refuge in You from the evil of what I have done. I acknowledge Your blessing upon me, and I acknowledge my sin, so forgive me, for none forgives sins except You.","O Allah, Du bist mein Herr, es gibt keinen Gott außer Dir. Du hast mich erschaffen und ich bin Dein Diener, und ich halte Deinen Bund und Dein Versprechen, so gut ich kann. Ich suche Zuflucht bei Dir vor dem Übel dessen, was ich getan habe. Ich erkenne Deine Gunst an mir an, und ich erkenne meine Sünde an, so vergib mir, denn niemand vergibt Sünden außer Dir.","من قالها موقناً بها فمات من يومه دخل الجنة","Whoever says it with certainty and dies that day enters Paradise.","Wer es mit Überzeugung sagt und an diesem Tag stirbt, tritt ins Paradies ein.",1),
@@ -77,9 +78,33 @@ D("اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَا�
 D("اللَّهُمَّ أَجِرْنِي مِنَ النَّارِ","Allahumma ajirni minan-nar.","O Allah, protect me from the Hellfire.","O Allah, schütze mich vor dem Höllenfeuer.","تقال 7 مرات بعد الفجر والمغرب","Said 7 times after Fajr and Maghrib.","Wird 7-mal nach Fadschr und Maghrib gesagt.",7)
 ];
 var cur=S, counts=[];
-function setLang(l){LANG=l;document.getElementById('l-ar').className=l=='ar'?'active':'';document.getElementById('l-en').className=l=='en'?'active':'';document.getElementById('l-de').className=l=='de'?'active':'';document.documentElement.dir=l=='ar'?'rtl':'ltr';render();}
-function render(){var L=document.getElementById("list");L.innerHTML="";counts=[];for(var i=0;i<cur.length;i++){counts[i]=cur[i].count;var d=document.createElement("div");d.className="card";d.id="c"+i;var showTr=document.getElementById("showTr").checked;var main=LANG=='ar'?cur[i].ar:(LANG=='en'?cur[i].en:cur[i].de);var fadl=LANG=='ar'?cur[i].fadl_ar:(LANG=='en'?cur[i].fadl_en:cur[i].fadl_de);var trHtml=(LANG!='ar'&&showTr)?"<div class='trans'>"+cur[i].tr+"</div>":"";var arHtml=LANG!='ar'?"<div style='font-size:24px;line-height:2;text-align:center'>"+cur[i].ar+"</div>":"";d.innerHTML="<p>"+main+"</p>"+trHtml+arHtml+"<div class='fadl'>⭐ "+fadl+"</div><div style='text-align:center;font-size:24px;color:#2D4A2B;font-weight:bold;margin-top:8px' id='n"+i+"'>"+cur[i].count+"</div><button class='greenBtn' id='b"+i+"' onclick='down("+i+")'>✓ اضغط هنا</button>";L.appendChild(d);}}
-function down(i){if(counts[i]>0){counts[i]--;document.getElementById("n"+i).innerText=counts[i];if(counts[i]==0){document.getElementById("c"+i).classList.add("done");document.getElementById("b"+i).innerText="✓ تم";}}}
+function setLang(l){LANG=l;document.getElementById('l-ar').className=l=='ar'?'active':'';document.getElementById('l-en').className=l=='en'?'active':'';document.getElementById('l-de').className=l=='de'?'active':'';document.documentElement.dir=l=='ar'?'rtl':'ltr';var lbl=document.getElementById('trLabel');if(l=='ar'){lbl.style.display='none';}else{lbl.style.display='flex';document.getElementById('trText').innerText=l=='en'?'Show transliteration':'Transliteration anzeigen';}render();}
+function render(){
+var L=document.getElementById("list");L.innerHTML="";counts=[];
+for(var i=0;i<cur.length;i++){
+counts[i]=cur[i].count;
+var d=document.createElement("div");d.className="card";d.id="c"+i;
+var showTr=document.getElementById("showTr").checked;
+var transText=LANG=='ar'?"":(LANG=='en'?cur[i].en:cur[i].de);
+var fadl=LANG=='ar'?cur[i].fadl_ar:(LANG=='en'?cur[i].fadl_en:cur[i].fadl_de);
+var btnText=LANG=='ar'?"✓ اضغط هنا":LANG=='en'?"✓ Tap here":"✓ Hier tippen";
+var trHtml=(LANG!='ar'&&showTr)?"<div class='trans'>🔤 "+cur[i].tr+"</div>":"";
+var transHtml=LANG!='ar'?"<div class='meaning'>"+transText+"</div>":"";
+d.innerHTML="<div style='font-size:26px;line-height:2;text-align:center'>"+cur[i].ar+"</div>"+trHtml+transHtml+"<div class='fadl'>⭐ "+fadl+"</div><div style='text-align:center;font-size:24px;color:#2D4A2B;font-weight:bold;margin-top:8px' id='n"+i+"'>"+cur[i].count+"</div><div class='prog'><div id='p"+i+"'></div></div><button class='greenBtn' id='b"+i+"' onclick='down("+i+")'>"+btnText+"</button>";
+L.appendChild(d);
+}}
+function down(i){
+if(counts[i]>0){
+counts[i]--;
+document.getElementById("n"+i).innerText=counts[i];
+var total=cur[i].count;
+var done=total-counts[i];
+var pct=Math.round(done/total*100);
+document.getElementById("p"+i).style.width=pct+"%";
+if(counts[i]==0){
+document.getElementById("c"+i).classList.add("done");
+document.getElementById("b"+i).innerText=LANG=='ar'?"✓ تم":LANG=='en'?"✓ Done":"✓ Fertig";
+}}}
 function showTab(t){document.getElementById("bS").className=t=="s"?"active":"";document.getElementById("bM").className=t=="m"?"active":"";document.getElementById("bN").className=t=="n"?"active":"";document.getElementById("bP").className=t=="p"?"active":"";cur=t=="s"?S:t=="m"?M:t=="n"?N:P;render();}
 render();
 </script></body></html>
