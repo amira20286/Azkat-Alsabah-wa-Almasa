@@ -5,80 +5,69 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>أذكار الصباح والمساء</title>
 <style>
-body{font-family:system-ui,sans-serif;background:#FDF6E3;margin:0;padding:16px}
-h1{text-align:center;color:#2D4A2B;margin:10px 0 5px;font-size:26px}
-.sub{text-align:center;color:#888;font-size:14px;margin-bottom:18px}
-.tabs{display:flex;gap:10px;justify-content:center;margin-bottom:18px}
-.tabs button{padding:10px 22px;border:0;border-radius:20px;font-size:16px;background:#EDE6D6;cursor:pointer}
-.tabs button.active{background:#2D4A2B;color:white}
-.card{background:white;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 6px #0001}
-.card h3{margin:0 0 8px;color:#2D4A2B;font-size:17px}
-.card p{font-size:18px;line-height:1.9;margin:0;color:#333}
-.controls{display:flex;align-items:center;justify-content:center;gap:15px;margin-top:14px}
-.controls button{width:42px;height:42px;border-radius:50%;border:0;font-size:22px;background:#F0EAD9;cursor:pointer}
-.controls button.plus{background:#2D4A2B;color:white}
-.count{font-size:20px;font-weight:bold;min-width:50px;text-align:center}
-.done{opacity:.5}
-.done h3{text-decoration:line-through}
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
+body{font-family:'Amiri',serif;background:#F9F3E8;margin:0;padding:0 14px 30px}
+.header{background:linear-gradient(135deg,#0F3D2E,#1B5E43);color:#FFD88A;text-align:center;padding:28px 12px 20px;border-radius:0 0 28px 28px;margin:0 -14px 18px}
+.header h1{margin:0;font-size:28px;color:white}
+.header p{margin:8px 0 0;color:#FFD88A;font-size:16px}
+.tabs{display:flex;gap:10px;margin-bottom:16px}
+.tabs button{flex:1;padding:13px;border:2px solid #1B5E43;background:white;color:#1B5E43;border-radius:50px;font-size:17px;font-weight:bold}
+.tabs button.active{background:#1B5E43;color:white}
+.card{background:white;border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:0 4px 14px #0001;border:1px solid #EDE0C5;display:flex;gap:12px;align-items:flex-start}
+.card.done{opacity:.55;background:#F0F7F0}
+.text{flex:1}
+.text h3{margin:0 0 6px;color:#1B5E43;font-size:19px}
+.text p{font-size:21px;line-height:2;margin:0;color:#333}
+.circle{min-width:62px;height:62px;border-radius:50%;background:#FFF4D6;border:2px solid #E9A426;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.circle b{font-size:22px;color:#1B5E43;line-height:1}
+.circle span{font-size:11px;color:#888}
+.hint{text-align:center;color:#999;font-size:13px;margin:6px}
 </style>
 </head>
 <body>
-
-<h1>أذكار الصباح والمساء</h1>
-<p class="sub">اذكر الله يذكرك</p>
-
+<div class="header"><h1>✦ أذكار الصباح والمساء ✦</h1><p>ألا بذكر الله تطمئن القلوب</p></div>
 <div class="tabs">
-<button id="bSabah" class="active" onclick="show('sabah')">أذكار الصباح</button>
-<button id="bMasa" onclick="show('masa')">أذكار المساء</button>
+<button id="bSabah" class="active" onclick="showSabah()">☀️ الصباح</button>
+<button id="bMasa" onclick="showMasa()">🌙 المساء</button>
 </div>
-
+<p class="hint">دوسي على أي ذكر عشان ينقص 👇</p>
 <div id="list"></div>
 
 <script>
-const data={
-sabah:[
-{t:"آية الكرسي",n:1,txt:"اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ"},
-{t:"سورة الإخلاص",n:3,txt:"قُلْ هُوَ اللَّهُ أَحَدٌ ۞ اللَّهُ الصَّمَدُ ۞ لَمْ يَلِدْ وَلَمْ يُولَدْ ۞ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ"},
-{t:"سورة الفلق",n:3,txt:"قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۞ مِن شَرِّ مَا خَلَقَ ۞ وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ"},
-{t:"سورة الناس",n:3,txt:"قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۞ مَلِكِ النَّاسِ ۞ إِلَهِ النَّاسِ ۞ مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ"},
-{t:"أصبحنا وأصبح الملك لله",n:1,txt:"أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ"},
-{t:"سيد الاستغفار",n:1,txt:"اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ"},
-{t:"سبحان الله وبحمده",n:100,txt:"سُبْحَانَ اللَّهِ وَبِحَمْدِهِ"},
-{t:"لا إله إلا الله",n:100,txt:"لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ"},
-],
-masa:[
-{t:"آية الكرسي",n:1,txt:"اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ"},
-{t:"سورة الإخلاص",n:3,txt:"قُلْ هُوَ اللَّهُ أَحَدٌ ۞ اللَّهُ الصَّمَدُ ۞ لَمْ يَلِدْ وَلَمْ يُولَدْ"},
-{t:"سورة الفلق",n:3,txt:"قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۞ مِن شَرِّ مَا خَلَقَ"},
-{t:"سورة الناس",n:3,txt:"قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۞ مَلِكِ النَّاسِ ۞ إِلَهِ النَّاسِ"},
-{t:"أمسينا وأمسى الملك لله",n:1,txt:"أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ"},
-{t:"سيد الاستغفار",n:1,txt:"اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ"},
-{t:"سبحان الله وبحمده",n:100,txt:"سُبْحَانَ اللَّهِ وَبِحَمْدِهِ"},
-{t:"أعوذ بكلمات الله التامات",n:3,txt:"أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ"},
-]};
-
-let cur='sabah'; let counts={};
-function show(type){
-cur=type;
-document.getElementById('bSabah').className = type=='sabah'?'active':'';
-document.getElementById('bMasa').className = type=='masa'?'active':'';
-counts={};
-let h="";
-data[type].forEach((z,i)=>{
-counts[i]=z.n;
-h+=`<div class="card" id="card${i}"><h3>${z.t}</h3><p>${z.txt}</p><div class="controls"><button onclick="change(${i},-1)">-</button><span class="count" id="c${i}">${z.n}</span><button class="plus" onclick="change(${i},1)">+</button></div></div>`;
-});
-document.getElementById("list").innerHTML=h;
+var sabah=[
+["آية الكرسي",1,"اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ"],
+["سورة الإخلاص",3,"قُلْ هُوَ اللَّهُ أَحَدٌ ۞ اللَّهُ الصَّمَدُ ۞ لَمْ يَلِدْ وَلَمْ يُولَدْ"],
+["سورة الفلق",3,"قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۞ مِن شَرِّ مَا خَلَقَ"],
+["سورة الناس",3,"قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۞ مَلِكِ النَّاسِ ۞ إِلَهِ النَّاسِ"],
+["أصبحنا وأصبح الملك لله",1,"أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ ، وَالْحَمْدُ لِلَّهِ"],
+["سيد الاستغفار",1,"اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ ، خَلَقْتَنِي وَأَنَا عَبْدُكَ"],
+["سبحان الله وبحمده",100,"سُبْحَانَ اللَّهِ وَبِحَمْدِهِ"],
+["لا إله إلا الله",100,"لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ"]
+];
+var masa=[
+["آية الكرسي",1,"اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ"],
+["سورة الإخلاص",3,"قُلْ هُوَ اللَّهُ أَحَدٌ ۞ اللَّهُ الصَّمَدُ"],
+["سورة الفلق",3,"قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۞ مِن شَرِّ مَا خَلَقَ"],
+["سورة الناس",3,"قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۞ مَلِكِ النَّاسِ"],
+["أمسينا وأمسى الملك لله",1,"أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ ، وَالْحَمْدُ لِلَّهِ"],
+["سيد الاستغفار",1,"اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ"],
+["سبحان الله وبحمده",100,"سُبْحَانَ اللَّهِ وَبِحَمْدِهِ"],
+["أعوذ بكلمات الله التامات",3,"أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ"]
+];
+var cur=sabah; var counts=[];
+function render(){
+var list=document.getElementById("list"); list.innerHTML=""; counts=[];
+for(var i=0;i<cur.length;i++){counts[i]=cur[i][1];
+var d=document.createElement("div"); d.className="card"; d.id="card"+i;
+d.onclick=(function(idx){return function(){tap(idx)}})(i);
+d.innerHTML="<div class='text'><h3>"+cur[i][0]+"</h3><p>"+cur[i][2]+"</p></div><div class='circle'><b id='c"+i+"'>"+cur[i][1]+"</b><span>متبقي</span></div>";
+list.appendChild(d);
 }
-function change(i,d){
-counts[i]+=d;
-if(counts[i]<0) counts[i]=0;
-if(counts[i]>data[cur][i].n) counts[i]=data[cur][i].n;
-document.getElementById("c"+i).innerText=counts[i];
-if(counts[i]==0) document.getElementById("card"+i).classList.add("done");
-else document.getElementById("card"+i).classList.remove("done");
 }
-show('sabah');
+function tap(i){if(counts[i]>0){counts[i]--; document.getElementById("c"+i).innerText=counts[i]; if(counts[i]==0) document.getElementById("card"+i).classList.add("done");}}
+function showSabah(){cur=sabah; document.getElementById("bSabah").className="active"; document.getElementById("bMasa").className=""; render();}
+function showMasa(){cur=masa; document.getElementById("bMasa").className="active"; document.getElementById("bSabah").className=""; render();}
+render();
 </script>
 </body>
 </html>
