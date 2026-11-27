@@ -495,18 +495,6 @@ function setLang(l){
 lang=l;
 show();
 }
-var nav=document.createElement("div");
-nav.style="position:sticky;top:0;background:#0f5132;padding:10px;text-align:center;z-index:99";
-nav.innerHTML=
-"<button onclick='setList(S,\"أذكار الصباح\")'>الصباح</button> "+
-"<button onclick='setList(M,\"أذكار المساء\")'>المساء</button> "+
-"<button onclick='setList(P,\"بعد الصلاة\")'>بعد الصلاة</button> "+
-"<button onclick='setList(N,\"أذكار النوم\")'>النوم</button><br>"+
-"<button onclick='setLang(\"ar\")'>عربي</button> "+
-"<button onclick='setLang(\"tr\")'>النطق</button> "+
-"<button onclick='setLang(\"en\")'>English</button> "+
-"<button onclick='setLang(\"de\")'>Deutsch</button>";
-document.body.insertBefore(nav,document.body.firstChild);
 show();
 </script>
 </body>
