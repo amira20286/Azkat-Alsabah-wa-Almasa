@@ -72,4 +72,15 @@ function tadd(){var n=prompt("اسم الذكر؟","ذكر جديد");if(n){T.pu
 function save(){try{localStorage.setItem("T",JSON.stringify(T));}catch(e){}}
 function showTab(t){document.getElementById("bS").className=t=="s"?"active":"";document.getElementById("bM").className=t=="m"?"active":"";document.getElementById("bN").className=t=="n"?"active":"";document.getElementById("bP").className=t=="p"?"active":"";document.getElementById("bT").className=t=="t"?"active":"";if(t=="t"){document.getElementById("list").style.display="none";document.getElementById("tasb").style.display="block";renderT();}else{document.getElementById("list").style.display="block";document.getElementById("tasb").style.display="none";cur=t=="s"?S:t=="m"?M:t=="n"?N:P;render();}}
 render();
+</script><script>
+setTimeout(()=>{
+let t=document.getElementById('tasb');
+if(t && !document.getElementById('myHeart')){
+let d=document.createElement('div');
+d.id='myHeart';
+d.innerHTML='❤️';
+d.style.cssText='text-align:center;font-size:42px;line-height:1;margin:8px 0';
+t.prepend(d);
+}
+},600);
 </script></body></html>
