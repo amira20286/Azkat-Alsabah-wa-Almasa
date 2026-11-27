@@ -432,16 +432,31 @@ D(
 var cur=S,curName="أذكار الصباح";
 var lang="ar";
 var counts={};
+function GA(d){
+return d.a||d.ar||d.arabic||d[0]||"";
+}
+function GT(d){
+return d.t||d.tr||d.trans||d[1]||"";
+}
+function GE(d){
+return d.e||d.en||d.english||d[2]||"";
+}
+function GD(d){
+return d.g||d.de||d.german||d[3]||"";
+}
 function T(d){
-if(lang=="ar")return d.a;
-if(lang=="tr")return d.t;
-if(lang=="en")return d.e;
-return d.g;
+if(lang=="ar")return GA(d);
+if(lang=="tr")return GT(d);
+if(lang=="en")return GE(d);
+return GD(d);
 }
 function NT(d){
-if(lang=="ar")return d.na;
-if(lang=="en")return d.ne;
-return d.ng;
+if(lang=="ar")return d.na||d.note_ar||d[4]||"";
+if(lang=="en")return d.ne||d.note_en||d[5]||"";
+return d.ng||d.note_de||d[6]||"";
+}
+function GC(d){
+return d.n||d.count||d.c||d[7]||1;
 }
 function show(){
 var box=document.getElementById("box");
@@ -457,10 +472,10 @@ var d=cur[i];
 var key=curName+i;
 var c=counts[key]||0;
 out+="<div style='border:1px solid #ddd;border-radius:14px;padding:14px;margin:10px;background:#fff'>";
-out+="<div dir='rtl' style='font-size:22px;line-height:2;text-align:right'>"+d.a+"</div>";
+out+="<div dir='rtl' style='font-size:22px;line-height:2;text-align:right'>"+GA(d)+"</div>";
 out+="<div style='color:#555;margin-top:8px'>"+T(d)+"</div>";
 out+="<div style='color:#888;font-size:13px;margin-top:6px'>"+NT(d)+"</div>";
-out+="<div style='margin-top:10px'><button onclick='doCount(\""+key+"\","+d.n+",this)'>"+c+" / "+d.n+" - اضغط للتسبيح</button></div>";
+out+="<div style='margin-top:10px'><button onclick='doCount(\""+key+"\","+GC( d )+",this)'>"+c+" / "+GC( d )+" - اضغط للتسبيح</button></div>";
 out+="</div>";
 }
 box.innerHTML=out;
