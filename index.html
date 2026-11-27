@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>أذكار الصباح والمساء</title>
+<style>
+body{font-family:system-ui;background:#fdf6e9;margin:0;padding:15px;text-align:center}
+h1{color:#7a5a00}
+button{padding:12px 20px;margin:5px;border:0;border-radius:20px;background:#7a5a00;color:white;font-size:16px}
+.card{background:white;border-radius:15px;padding:15px;margin:12px 0;box-shadow:0 2px 8px #0001;text-align:right}
+.counter{display:flex;justify-content:space-between;align-items:center}
+.count{font-size:28px;font-weight:bold;color:#7a5a00}
+.tap{width:70px;height:70px;border-radius:50%;font-size:18px;background:#e8a100}
+</style>
+</head>
+<body>
+<h1>🌿 أذكار الصباح والمساء</h1>
+<button onclick="show('sabah')">أذكار الصباح</button>
+<button onclick="show('masa')">أذكار المساء</button>
+<div id="list"></div>
+<script>
+const data={
+sabah:[
+{t:"آية الكرسي",n:1,txt:"اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ"},
+{t:"سورة الإخلاص",n:3,txt:"قُلْ هُوَ اللَّهُ أَحَدٌ"},
+{t:"سورة الفلق",n:3,txt:"قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ"},
+{t:"سورة الناس",n:3,txt:"قُلْ أَعُوذُ بِرَبِّ النَّاسِ"},
+{t:"أصبحنا وأصبح الملك لله",n:1,txt:"أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ"},
+{t:"سبحان الله وبحمده",n:100,txt:"سُبْحَانَ اللَّهِ وَبِحَمْدِهِ"}
+],
+masa:[
+{t:"آية الكرسي",n:1,txt:"اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ"},
+{t:"سورة الإخلاص",n:3,txt:"قُلْ هُوَ اللَّهُ أَحَدٌ"},
+{t:"سورة الفلق",n:3,txt:"قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ"},
+{t:"سورة الناس",n:3,txt:"قُلْ أَعُوذُ بِرَبِّ النَّاسِ"},
+{t:"أمسينا وأمسى الملك لله",n:1,txt:"أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ"},
+{t:"سبحان الله وبحمده",n:100,txt:"سُبْحَانَ اللَّهِ وَبِحَمْدِهِ"}
+]};
+let counts={};
+function show(type){
+counts={};
+let h="";
+data[type].forEach((z,i)=>{
+counts[i]=z.n;
+h+=`<div class="card"><h3>${z.t}</h3><p>${z.txt}</p><div class="counter"><span>المتبقي: <b id="c${i}" class="count">${z.n}</b></span><button class="tap" onclick="tap(${i})">اضغط</button></div></div>`;
+});
+document.getElementById("list").innerHTML=h;
+}
+show('sabah');
+function tap(i){ if(counts[i]>0){counts[i]--; document.getElementById("c"+i).innerText=counts[i]; if(counts[i]==0) alert("أحسنت! خلصتي الذكر ده ✅");} }
+</script>
+</body>
+</html>
