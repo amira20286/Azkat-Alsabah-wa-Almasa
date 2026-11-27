@@ -491,6 +491,18 @@ counts={};
 show();
 window.scrollTo(0,0);
 }
+function showTab(x){
+document.getElementById("tasbih").style.display="none";
+var b=document.getElementById("box"); if(b) b.style.display="block";
+if(x=='s') setList(S,"أذكار الصباح");
+if(x=='m') setList(M,"أذكار المساء");
+if(x=='p') setList(P,"بعد الصلاة");
+if(x=='n') setList(N,"أذكار النوم");
+if(x=='t'){
+if(b) b.style.display="none";
+document.getElementById("tasbih").style.display="block";
+}
+}
 function setLang(l){
 lang=l;
 show();
