@@ -22,38 +22,8 @@ h1{text-align:center;color:#2D4A2B;margin:10px 0 5px;font-size:26px}
 .undoBtn{width:100%;margin-top:8px;padding:8px;border:0;background:transparent;color:#999;font-size:13px}
 .done{opacity:.45;background:#F0F7F0}
 .done .greenBtn{background:#A8C0A8}
-/* المسبحة */
 .tasbTop{background:white;border-radius:14px;padding:14px;text-align:center;margin-bottom:14px}
 .tasbTop h2{margin:0;color:#2D4A2B}
 .tasbTop p{color:#888;font-size:13px;margin:6px 0 0}
 .tasbCard{background:white;border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 2px 6px #0001}
-.tasbCard input{width:100%;border:0;border-bottom:1px solid #eee;text-align:center;font-size:19px;font-weight:bold;color:#2D4A2B;padding:8px;outline:none;background:transparent}
-.tasbNum{text-align:center;font-size:38px;font-weight:bold;color:#2D4A2B;margin:10px 0 4px}
-.tasbRow{display:flex;gap:10px}
-.tasbRow button{flex:1;padding:14px;border:0;border-radius:12px;font-size:18px;font-weight:bold}
-.btnPlus{background:#2D4A2B;color:white}
-.btnMinus{background:#F0EAD9;color:#555}
-.btnDel{background:#FFEAEA;color:#C00;flex:0 0 52px !important}
-.addBtn{width:100%;padding:15px;border:2px dashed #2D4A2B;background:#fff;border-radius:14px;color:#2D4A2B;font-size:17px;font-weight:bold;margin-top:6px}
-.resetAll{width:100%;padding:10px;border:0;background:transparent;color:#999;font-size:13px;margin-top:8px}
-</style>
-</head>
-<body>
-<h1>أذكار الصباح والمساء</h1>
-<p class="sub" id="subText">دوسي على الزرار الأخضر تحت كل ذكر</p>
-<div class="tabs">
-<button id="bSabah" class="active" onclick="showTab('sabah')">☀️ الصباح</button>
-<button id="bMasa" onclick="showTab('masa')">🌙 المساء</button>
-<button id="bTasb" onclick="showTab('tasb')">📿 المسبحة</button>
-</div>
-<div id="list"></div>
-<div id="tasbSection" style="display:none"></div>
-
-<script>
-var sabah=[
-["آية الكرسي",1,"اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ","من قالها حين يصبح أُجير من الجن حتى يمسي."],
-["سورة الإخلاص",3,"قُلْ هُوَ اللَّهُ أَحَدٌ ۞ اللَّهُ الصَّمَدُ ۞ لَمْ يَلِدْ وَلَمْ يُولَدْ ۞ وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ","من قالها ثلاثاً حين يصبح وحين يمسي كفته من كل شيء."],
-["سورة الفلق",3,"قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۞ مِن شَرِّ مَا خَلَقَ ۞ وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ ۞ وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۞ وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ","تكفيك من كل شيء، وتحفظك من الشر والحسد."],
-["سورة الناس",3,"قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۞ مَلِكِ النَّاسِ ۞ إِلَهِ النَّاسِ ۞ مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۞ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۞ مِنَ الْجِنَّةِ وَالنَّاسِ","تحفظك من وساوس الشيطان."],
-["أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ",1,"أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذَا الْيَوْمِ وَخَيْرَ مَا بَعْدَهُ","تجديد التوحيد والتوكل على الله."],
-["سَيِّدُ الِاسْتِغْفَارِ",1,"اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَع
+.tasbCard input{width:100%;border:0;border-bottom:1px solid #eee;text-align:center;font-size:19px;font-weight:bold;color:#2
